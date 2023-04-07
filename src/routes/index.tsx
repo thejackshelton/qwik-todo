@@ -1,104 +1,107 @@
-import { component$ } from '@builder.io/qwik';
-import type { DocumentHead } from '@builder.io/qwik-city';
+import { component$, $ } from '@builder.io/qwik';
+import {
+  type DocumentHead,
+  Form,
+  routeLoader$,
+  routeAction$,
+  zod$,
+  z,
+} from '@builder.io/qwik-city';
+import { GoTrash } from '@qwikest/icons/octicons';
+import styles from './index.module.css';
 
-import Counter from '~/components/starter/counter/counter';
-import Hero from '~/components/starter/hero/hero';
-import Infobox from '~/components/starter/infobox/infobox';
-import Starter from '~/components/starter/next-steps/next-steps';
+interface listItem {
+  text?: string;
+  id: string;
+}
+
+export const list: listItem[] = [];
+
+export const useListLoader = routeLoader$(() => {
+  return list;
+});
+
+export const useAddToListAction = routeAction$(
+  (item) => {
+    // Generate a random id for the item
+    const id = crypto.randomUUID();
+    console.log(id);
+
+    // Add the item to the list
+    list.push({ text: item.text, id });
+    return {
+      success: true,
+    };
+  },
+  zod$({
+    text: z.string().trim().min(1),
+  })
+);
+
+export const useRemoveFromListAction = routeAction$(
+  // Extract the id from the form data
+  (itemData: listItem) => {
+    const { id } = itemData;
+
+    // Filter the list to exclude the item with the specified id
+    const updatedList = list.filter((item) => item.id !== id);
+
+    // Update the list with the filtered array
+    list.length = 0;
+    list.push(...updatedList);
+    return {
+      success: true,
+    };
+  },
+  zod$({
+    id: z.string().uuid(), // Validate that id is a valid UUID
+  })
+);
 
 export default component$(() => {
+  const list = useListLoader();
+  const addAction = useAddToListAction();
+  const removeAction = useRemoveFromListAction();
+
+  const handleSubmit = $(() => {
+    const input = document.querySelector('input');
+
+    if (input) {
+      input.value = '';
+      input.focus();
+    }
+  });
+
   return (
     <>
-      <Hero />
-
-      <div class="section bright">
-        <div class="container center">
-          <Starter />
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="container center">
-          <h3>
-            You can <b>count</b> on me
-          </h3>
-          <Counter />
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="container topics">
-          <Infobox>
-            <div q:slot="title" class="icon icon-cli">
-              CLI Commands
-            </div>
-            <>
-              <p>
-                <code>npm run dev</code>
-                <br />
-                Starts the development server and watches for changes
-              </p>
-              <p>
-                <code>npm run preview</code>
-                <br />
-                Creates production build and starts a server to preview it
-              </p>
-              <p>
-                <code>npm run build</code>
-                <br />
-                Creates production build
-              </p>
-              <p>
-                <code>npm run qwik add</code>
-                <br />
-                Runs the qwik CLI to add integrations
-              </p>
-            </>
-          </Infobox>
-
+      <div class={styles.wrapper}>
+        <div>
+          <div class={styles.heading}>
+            <h1>Jack's Todo App!</h1>
+          </div>
+          <div class={styles.tasks}>
+            <ul class={styles.list}>
+              {list.value.map((item) => (
+                <li class={styles.item} key={item.id}>
+                  <span>{item.text}</span>
+                  <button>
+                    <GoTrash
+                      onClick$={() => removeAction.submit({ id: item.id })}
+                    />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
           <div>
-            <Infobox>
-              <div q:slot="title" class="icon icon-apps">
-                Example Apps
-              </div>
-              <p>
-                Have a look at the <a href="/demo/flower">Flower App</a> or the{' '}
-                <a href="/demo/todolist">Todo App</a>.
-              </p>
-            </Infobox>
-
-            <Infobox>
-              <div q:slot="title" class="icon icon-community">
-                Community
-              </div>
-              <ul>
-                <li>
-                  <span>Questions or just want to say hi? </span>
-                  <a href="https://qwik.builder.io/chat" target="_blank">
-                    Chat on discord!
-                  </a>
-                </li>
-                <li>
-                  <span>Follow </span>
-                  <a href="https://twitter.com/QwikDev" target="_blank">
-                    @QwikDev
-                  </a>
-                  <span> on Twitter</span>
-                </li>
-                <li>
-                  <span>Open issues and contribute on </span>
-                  <a href="https://github.com/BuilderIO/qwik" target="_blank">
-                    GitHub
-                  </a>
-                </li>
-                <li>
-                  <span>Watch </span>
-                  <a href="https://qwik.builder.io/media/" target="_blank">
-                    Presentations, Podcasts, Videos, etc.
-                  </a>
-                </li>
-              </ul>
-            </Infobox>
+            <Form action={addAction} onSubmit$={handleSubmit}>
+              <input
+                type="text"
+                name="text"
+                placeholder="Add task here..."
+                required
+              />
+            </Form>
           </div>
         </div>
       </div>
@@ -107,11 +110,11 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: 'Welcome to Qwik',
+  title: `Jack's Qwik todo app!`,
   meta: [
     {
       name: 'description',
-      content: 'Qwik site description',
+      content: 'A todo app I made with Qwik!',
     },
   ],
 };

@@ -38,4 +38,5 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['error'],
     '@typescript-eslint/consistent-type-imports': 'warn',
   },
+  ignorePatterns: ['postcss.config.js'],
 };
