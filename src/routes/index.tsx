@@ -100,13 +100,9 @@ export default component$(() => {
               {list.value.map((item) => (
                 <li class={styles.item} key={item.id}>
                   {item.id === editingIdSignal.value ? (
-                    <EditForm item={item} isEditable={isEditable} />
+                    <EditForm item={item} editingIdSignal={editingIdSignal} />
                   ) : (
-                    <Content
-                      item={item}
-                      isEditable={isEditable}
-                      editingIdSignal={editingIdSignal}
-                    />
+                    <Content item={item} editingIdSignal={editingIdSignal} />
                   )}
                 </li>
               ))}

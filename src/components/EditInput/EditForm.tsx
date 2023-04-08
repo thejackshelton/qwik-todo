@@ -6,25 +6,27 @@ import type { listItem } from '../../routes/index';
 
 export interface EditFormProps {
   item: listItem;
-  isEditable: Signal<boolean>;
+  editingIdSignal: Signal<string>;
 }
 
-export const EditForm = component$(({ item, isEditable }: EditFormProps) => {
-  return (
-    <div class={styles.wrapper}>
-      <Form class={styles.form}>
-        <input class={styles.edit} type="text" value={item.text} />
-        <button class={styles.done}>
-          <GoCheck />
-        </button>
-      </Form>
-      <div class={styles.remove}>
-        <button onClick$={() => (isEditable.value = !isEditable.value)}>
-          <GoX />
-        </button>
+export const EditForm = component$(
+  ({ item, editingIdSignal }: EditFormProps) => {
+    return (
+      <div class={styles.wrapper}>
+        <Form class={styles.form}>
+          <input class={styles.edit} type="text" value={item.text} />
+          <button class={styles.done}>
+            <GoCheck />
+          </button>
+        </Form>
+        <div class={styles.remove}>
+          <button onClick$={() => (editingIdSignal.value = '')}>
+            <GoX />
+          </button>
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 export default EditForm;
