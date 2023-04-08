@@ -86,7 +86,7 @@ export default component$(() => {
   const addAction = useAddToListAction();
 
   const isEditable = useSignal(false);
-  const editingIdSignal = useSignal(list.value[0].id);
+  const editingIdSignal = useSignal(list.value[0]?.id);
 
   return (
     <>
@@ -99,7 +99,7 @@ export default component$(() => {
             <ul class={styles.list}>
               {list.value.map((item) => (
                 <li class={styles.item} key={item.id}>
-                  {isEditable ? (
+                  {item.id === editingIdSignal.value ? (
                     <EditForm item={item} isEditable={isEditable} />
                   ) : (
                     <Content
