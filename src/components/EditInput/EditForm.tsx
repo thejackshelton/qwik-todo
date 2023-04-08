@@ -1,14 +1,19 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, type Signal } from '@builder.io/qwik';
 import { Form } from '@builder.io/qwik-city';
 import styles from './editform.module.css';
 import { GoCheck, GoX } from '@qwikest/icons/octicons';
-import { type ContentProps } from '../Content/Content';
+import type { listItem } from '../../routes/index';
 
-export const EditForm = component$(({ item, isEditable }: ContentProps) => {
+export interface EditFormProps {
+  item: listItem;
+  isEditable: Signal<boolean>;
+}
+
+export const EditForm = component$(({ item, isEditable }: EditFormProps) => {
   return (
     <div class={styles.wrapper}>
       <Form class={styles.form}>
-        <input class={styles.edit} type="" value={item.text} />
+        <input class={styles.edit} type="text" value={item.text} />
         <button class={styles.done}>
           <GoCheck />
         </button>
