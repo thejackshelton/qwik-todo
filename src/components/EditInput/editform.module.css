@@ -1,0 +1,37 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+}
+
+.wrapper button {
+  padding: 0px 8px;
+}
+
+.edit {
+  padding: 0px;
+  margin: 0px;
+  height: calc(30rem / 16);
+}
+
+button {
+  background: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0px;
+}
+
+.done {
+  margin-left: 8px;
+}
+
+.remove {
+  line-height: 0;
+}

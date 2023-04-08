@@ -1,4 +1,5 @@
 import Content from '~/components/Content/Content';
+import EditForm from '~/components/EditInput/EditForm';
 import { component$, useSignal } from '@builder.io/qwik';
 import {
   type DocumentHead,
@@ -58,25 +59,32 @@ export const useRemoveFromListAction = routeAction$(
   })
 );
 
+// not using yet
+// export const useEditFromListAction = routeAction$(
+//   // Extract the id from the form data
+//   (itemData: listItem) => {
+//     const { id } = itemData;
+
+//     // Filter the list to exclude the item with the specified id
+//     const editItem = list.filter((item) => item.id === id && item.text);
+
+//     // Update the list with the filtered array
+//     list.length = 0;
+//     list.push(...updatedItem);
+//     return {
+//       success: true,
+//     };
+//   },
+//   zod$({
+//     id: z.string().uuid(), // Validate that id is a valid UUID
+//   })
+// );
+
 export default component$(() => {
   const list = useListLoader();
   const addAction = useAddToListAction();
-  const removeAction = useRemoveFromListAction();
 
-  // need to convert to string for contentEditable types
   const isEditable = useSignal(false);
-  const contentEditable = isEditable.value ? 'true' : 'false';
-
-  // const handleEdit = $(() => {
-  //   const content = document.querySelector('.content') as HTMLElement;
-  //   isEditable.value = !isEditable.value;
-
-  //   if (isEditable.value === true) {
-  //     content.focus();
-  //   }
-
-  //   console.log(isEditable.value);
-  // });
 
   return (
     <>
@@ -89,7 +97,11 @@ export default component$(() => {
             <ul class={styles.list}>
               {list.value.map((item) => (
                 <li class={styles.item} key={item.id}>
-                  <Content item={item} />
+                  {isEditable.value ? (
+                    <EditForm item={item} isEditable={isEditable} />
+                  ) : (
+                    <Content item={item} isEditable={isEditable} />
+                  )}
                 </li>
               ))}
             </ul>

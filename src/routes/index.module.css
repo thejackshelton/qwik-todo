@@ -41,19 +41,3 @@ input {
   padding: 8px;
   margin-top: 8px;
 }
-
-button {
-  background: transparent;
-  color: white;
-  border: none;
-  cursor: pointer;
-  padding: 0px;
-}
-
-.controls {
-  display: flex;
-}
-
-.controls > button {
-  padding: 0px 4px;
-}
