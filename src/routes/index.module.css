@@ -26,7 +26,6 @@ h1 {
   background: #2b4555;
   margin-bottom: 8px;
   color: white;
-  align-self: flex-start;
   margin-bottom: 16px;
   border-radius: 4px;
   display: flex;
@@ -48,4 +47,13 @@ button {
   color: white;
   border: none;
   cursor: pointer;
+  padding: 0px;
+}
+
+.controls {
+  display: flex;
+}
+
+.controls > button {
+  padding: 0px 4px;
 }

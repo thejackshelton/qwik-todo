@@ -1,4 +1,5 @@
-import { component$, $ } from '@builder.io/qwik';
+import Content from '~/components/Content/Content';
+import { component$, useSignal } from '@builder.io/qwik';
 import {
   type DocumentHead,
   Form,
@@ -7,10 +8,9 @@ import {
   zod$,
   z,
 } from '@builder.io/qwik-city';
-import { GoTrash } from '@qwikest/icons/octicons';
 import styles from './index.module.css';
 
-interface listItem {
+export interface listItem {
   text?: string;
   id: string;
 }
@@ -63,14 +63,20 @@ export default component$(() => {
   const addAction = useAddToListAction();
   const removeAction = useRemoveFromListAction();
 
-  const handleSubmit = $(() => {
-    const input = document.querySelector('input');
+  // need to convert to string for contentEditable types
+  const isEditable = useSignal(false);
+  const contentEditable = isEditable.value ? 'true' : 'false';
 
-    if (input) {
-      input.value = '';
-      input.focus();
-    }
-  });
+  // const handleEdit = $(() => {
+  //   const content = document.querySelector('.content') as HTMLElement;
+  //   isEditable.value = !isEditable.value;
+
+  //   if (isEditable.value === true) {
+  //     content.focus();
+  //   }
+
+  //   console.log(isEditable.value);
+  // });
 
   return (
     <>
@@ -83,18 +89,13 @@ export default component$(() => {
             <ul class={styles.list}>
               {list.value.map((item) => (
                 <li class={styles.item} key={item.id}>
-                  <span>{item.text}</span>
-                  <button>
-                    <GoTrash
-                      onClick$={() => removeAction.submit({ id: item.id })}
-                    />
-                  </button>
+                  <Content item={item} />
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <Form action={addAction} onSubmit$={handleSubmit}>
+            <Form action={addAction} spaReset>
               <input
                 type="text"
                 name="text"
