@@ -10,7 +10,7 @@ export const useServerTimeLoader = routeLoader$(() => {
 
 export default component$(() => {
   return (
-    <main style={{ height: '100%' }}>
+    <main style={{ height: '100%', padding: '16px' }}>
       <Slot />
     </main>
   );

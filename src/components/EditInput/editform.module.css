@@ -30,8 +30,16 @@ button {
 
 .done {
   margin-left: 8px;
+  min-width: 20px;
 }
 
 .remove {
   line-height: 0;
+  min-width: 20px;
+}
+
+@media (max-width: 375px) {
+  .remove > button > svg {
+    min-width: 20px;
+  }
 }

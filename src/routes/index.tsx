@@ -85,8 +85,7 @@ export default component$(() => {
   const list = useListLoader();
   const addAction = useAddToListAction();
 
-  const isEditable = useSignal(false);
-  const editingIdSignal = useSignal(list.value[0]?.id);
+  const editingIdSignal = useSignal('');
 
   return (
     <>

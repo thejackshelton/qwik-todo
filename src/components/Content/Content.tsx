@@ -1,4 +1,4 @@
-import { component$, type Signal } from '@builder.io/qwik';
+import { component$, type Signal, $ } from '@builder.io/qwik';
 import { GoTrash, GoPencil } from '@qwikest/icons/octicons';
 import styles from './content.module.css';
 import { useRemoveFromListAction } from '../../routes/index';
@@ -17,7 +17,11 @@ export const Content = component$(({ item, editingIdSignal }: ContentProps) => {
         <span class={styles.content}>{item.text}</span>
       </div>
       <div class={styles.controls}>
-        <button onClick$={() => (editingIdSignal.value = item.id)}>
+        <button
+          onClick$={$(() => {
+            editingIdSignal.value = item.id;
+          })}
+        >
           <GoPencil />
         </button>
         <button onClick$={() => removeFromListAction.submit({ id: item.id })}>

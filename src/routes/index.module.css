@@ -1,5 +1,5 @@
 .heading {
-  font-size: 2rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: #333;
   margin: 0 0 1rem 0;
@@ -40,4 +40,22 @@ input {
   border-radius: 4px;
   padding: 8px;
   margin-top: 8px;
+}
+
+@media (min-width: 768px) {
+  .heading {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 968px) {
+  .heading {
+    font-size: 1.75rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .heading {
+    font-size: 2em;
+  }
 }
