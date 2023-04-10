@@ -12,7 +12,11 @@ import {
 import styles from './index.module.css';
 
 export interface listItem {
-  text?: string;
+  text: string;
+  id: string;
+}
+
+interface RemoveFormData {
   id: string;
 }
 
@@ -42,7 +46,7 @@ export const useAddToListAction = routeAction$(
 
 export const useRemoveFromListAction = routeAction$(
   // Extract the id from the form data
-  (itemData: listItem) => {
+  (itemData: RemoveFormData) => {
     const { id } = itemData;
 
     // Filter the list to exclude the item with the specified id
@@ -60,26 +64,26 @@ export const useRemoveFromListAction = routeAction$(
   })
 );
 
-// not using yet
-// export const useEditFromListAction = routeAction$(
-//   // Extract the id from the form data
-//   (itemData: listItem) => {
-//     const { id } = itemData;
+export const useEditFromListAction = routeAction$(
+  // Extract the id from the form data
+  (itemData: listItem) => {
+    const { id, text } = itemData;
 
-//     // Filter the list to exclude the item with the specified id
-//     const editItem = list.filter((item) => item.id === id && item.text);
+    // Filter the list to exclude the item with the specified id
+    const itemToUpdate = list.find((item) => item.id === id);
+    if (itemToUpdate) {
+      itemToUpdate.text = text;
+    }
 
-//     // Update the list with the filtered array
-//     list.length = 0;
-//     list.push(...updatedItem);
-//     return {
-//       success: true,
-//     };
-//   },
-//   zod$({
-//     id: z.string().uuid(), // Validate that id is a valid UUID
-//   })
-// );
+    return {
+      success: true,
+    };
+  },
+  zod$({
+    id: z.string().uuid(),
+    text: z.string().trim().min(1),
+  })
+);
 
 export default component$(() => {
   const list = useListLoader();
