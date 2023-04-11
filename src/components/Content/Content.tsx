@@ -24,7 +24,10 @@ export const Content = component$(({ item, editingIdSignal }: ContentProps) => {
         >
           <GoPencil />
         </button>
-        <button onClick$={() => removeFromListAction.submit({ id: item.id })}>
+        <button
+          onClick$={() => removeFromListAction.submit({ id: item.id })}
+          onSubmit$={() => removeFromListAction.submit({ id: item.id })}
+        >
           <GoTrash />
         </button>
       </div>

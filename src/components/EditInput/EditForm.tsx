@@ -1,4 +1,4 @@
-import { component$, type Signal, useSignal, $ } from '@builder.io/qwik';
+import { component$, type Signal, useSignal } from '@builder.io/qwik';
 import { Form } from '@builder.io/qwik-city';
 import styles from './editform.module.css';
 import { GoCheck, GoX } from '@qwikest/icons/octicons';
@@ -17,18 +17,14 @@ export const EditForm = component$(
     const inputRef = useSignal<HTMLInputElement>();
     inputRef.value?.focus();
 
-    const inputForm = useSignal<HTMLFormElement>();
-
-    const handleSubmit = $((e: Event, form: HTMLFormElement) => {
-      editAction.submit({ text: item.text, id: item.id });
-      form.submit();
-    });
     return (
       <div class={styles.wrapper}>
         <Form
           action={editAction}
           class={styles.form}
-          onSubmit$={handleSubmit}
+          onSubmitCompleted$={() => {
+            editingIdSignal.value = '';
+          }}
           spaReset
         >
           <input
@@ -41,10 +37,7 @@ export const EditForm = component$(
           />
           {/* Include the hidden input field for the "id" attribute */}
           <input type="hidden" name="id" value={item.id} />
-          <button
-            class={styles.done}
-            onClick$={() => inputForm.value?.submit()}
-          >
+          <button class={styles.done} type="submit">
             <GoCheck />
           </button>
         </Form>
