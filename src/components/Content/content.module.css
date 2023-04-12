@@ -13,3 +13,21 @@ button {
 .controls > button {
   padding: 0px 8px;
 }
+
+.hidden {
+  display: none;
+}
+
+.check {
+  padding: 8px;
+  background: #64748b;
+  border-radius: 50%;
+  width: 37.333px;
+  height: 37.333px;
+  margin-right: 8px;
+}
+
+.done {
+  text-decoration: line-through;
+  color: #64748b;
+}

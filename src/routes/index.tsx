@@ -74,6 +74,7 @@ export const useEditFromListAction = routeAction$(
     if (itemToUpdate) {
       itemToUpdate.text = text;
     }
+    console.log(list);
 
     return {
       success: true,
