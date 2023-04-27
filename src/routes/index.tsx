@@ -34,6 +34,7 @@ export const useAddToListAction = routeAction$(
 
     // Add the item to the list
     list.push({ text: item.text, id });
+
     console.log(list);
     return {
       success: true,
